@@ -1,25 +1,19 @@
 <?php
 require __DIR__ . '/utils.php';
 require __DIR__ . '/../utils.php';
-$lines = extractFileToArray('input-example.txt');
+$lines = extractFileToArray('input.txt');
 
-$red = 12;
-$blue = 14;
-$green = 13;
+$thresholds = [12, 14, 13];
 
 $possibleIds = [];
 foreach ($lines as $line) {
-  $id = extractGameId($line);
   $draws = extractDraws($line);
-  $isPossible = true;
   foreach ($draws as $draw) {
-    if ($draw[0] > $red or $draw[1] > $blue or $draw[2] > $green) {
-      $isPossible = false;
+    if ($draw[0] > $thresholds[0] or $draw[1] > $thresholds[1] or $draw[2] > $thresholds[2]) {
+      continue 2;
     }
   }
-  if ($isPossible) {
-    $possibleIds[] = $id;
-  }
+  $possibleIds[] = extractGameId($line);
 }
 
 var_dump(array_sum($possibleIds));
