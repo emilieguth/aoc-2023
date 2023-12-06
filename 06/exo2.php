@@ -1,7 +1,6 @@
 <?php
 require __DIR__ . '/../utils.php';
 $lines = extractFileToArray('input.txt');
-var_dump($lines);
 $winningChoices = 0;
 
 $time = extractData($lines[0], 5);
