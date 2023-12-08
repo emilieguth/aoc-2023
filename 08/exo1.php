@@ -7,16 +7,6 @@ $sequence = 'LRLRLLRRLLRRLRRLRRRLLRLRLRLRLRRLRRRLRLRRLRLLRRLLRLRRLRLRRLLRRRLRLRL
 
 $nodes = formatInput($lines);
 
-$steps = 0;
-$found = false;
 $nextStep = 'AAA';
-while($found === false) {
-  $direction = $sequence[$steps % strlen($sequence)];
-  echo "$nextStep -> $direction ($steps)\n";
-  $nextStep = $nodes[$nextStep][$direction];
-  $steps++;
-  if ($nextStep === 'ZZZ') {
-    $found = true;
-  }
-}
+$steps = extractSteps($sequence, $nodes, $nextStep);
 var_dump($steps);

@@ -2,9 +2,6 @@
 require __DIR__ . '/utils.php';
 require __DIR__ . '/../utils.php';
 
-//$lines = extractFileToArray('input-example-2.txt');
-//$sequence = 'LR';
-
 $lines = extractFileToArray('input.txt');
 $sequence = 'LRLRLLRRLLRRLRRLRRRLLRLRLRLRLRRLRRRLRLRRLRLLRRLLRLRRLRLRRLLRRRLRLRLRRRLRLLRRRLLLLLLRRRLRRLLLRRLRLRRLRRLRLRRLRRLLRRLRRRLRRRLLRLRLLLRRLLLRRLLRRLRLLRRRLRRRLRRRLRLRRLRRLLLRRRLRRLLRRLRRRLRLRLRRLRRLRRRLRRRLRLLLLRRRLRLRRRLRRRLLRLRRLRRLLRLLLRRLRLRRLRRRLRRRLRRRLLRRRLRLLRRRLRRRLRRRLRRRLRRLRRRLLRRLLRLRLRRRLRRRLRLRRRR';
 
@@ -17,25 +14,15 @@ foreach(array_keys($nodes) as $node) {
   }
 }
 
-$allValues = [];
+$allSteps = [];
 foreach($endingWithANodes as $index => $nextStep) {
-  $steps = 0;
-  $found = false;
-  while($found === false) {
-    $direction = $sequence[$steps % strlen($sequence)];
-    $nextStep = $nodes[$nextStep][$direction];
-    $steps++;
-    if (str_ends_with($nextStep, 'Z')) {
-      $found = true;
-    }
-  }
-  $allValues[] = $steps;
+  $allSteps[] = extractSteps($sequence, $nodes, $nextStep);
 }
 
-$firstValue = array_pop($allValues);
+$currentValue = array_pop($allSteps);
 $ppcm = null;
-foreach($allValues as $value) {
-  $ppcm = gmp_lcm($firstValue, $value);
-  $firstValue = $ppcm;
+foreach($allSteps as $step) {
+  $ppcm = gmp_lcm($currentValue, $step);
+  $currentValue = $ppcm;
 }
 var_dump($ppcm);
