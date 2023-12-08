@@ -23,6 +23,7 @@ var_dump(array_sum($results));
 
 
 function sortHands(string $hand1, string $hand2): int {
+  $order = ['A', 'K', 'Q', 'T', '9', '8', '7', '6', '5', '4', '3', '2', 'J'];
   $hand1Count = [];
   $hand2Count = [];
 
@@ -35,6 +36,9 @@ function sortHands(string $hand1, string $hand2): int {
     $hand2Count[$hand2[$i]]++;
 
   }
+
+  affectJokers($hand1Count, $order);
+  affectJokers($hand2Count, $order);
 
   if (max($hand1Count) < max($hand2Count)) {
     return -1;
@@ -64,6 +68,35 @@ function sortHands(string $hand1, string $hand2): int {
     }
   }
 
-  $order = ['A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2'];
   return compareCards($hand1, $hand2, $order);
+}
+
+function affectJokers(array &$counts, array $order) {
+  if (isset($counts['J']) === false or count($counts) === 1) {
+    return;
+  }
+  $nbJokers = $counts['J'];
+  unset($counts['J']);
+  $max = max($counts);
+
+  // count nb of max
+  $maxIndexes = [];
+  foreach($counts as $index => $count) {
+    if ($count === $max) {
+      $maxIndexes[] = $index;
+    }
+  }
+
+  if (count($maxIndexes) === 1) {
+    $counts[$maxIndexes[0]] += $nbJokers;
+    return;
+  }
+
+  foreach($order as $card) {
+    if (isset($counts[$card]) === true) {
+      $counts[$card] += $nbJokers;
+      return;
+    }
+  }
+
 }
