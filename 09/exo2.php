@@ -15,9 +15,14 @@ foreach($lines as $line) {
   $treatedRow = treatRow($row);
 
   $value = 0;
-  foreach($treatedRow as $row) {
-    $value += end($row);
+  for($i = count($treatedRow) - 1; $i >= 0; $i--) {
+    if ($i === (count($treatedRow) - 1)) {
+      $value = reset($treatedRow[$i]);
+      continue;
+    }
+    $value = reset($treatedRow[$i]) - $value;
   }
   $extrapolatedValues[] = $value;
 }
 var_dump(array_sum($extrapolatedValues));
+
